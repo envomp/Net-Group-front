@@ -95,7 +95,6 @@ const AddUserDialog = ({refreshData, addUserHandler, stash1, stash2}) => {
                 aria-labelledby="form-dialog-title"
                 fullWidth={true}
             >
-                <ToastContainer autoClose={2000}/>
                 <DialogTitle id="form-dialog-title">Add User</DialogTitle>
                 <DialogContent>
                     <List>
