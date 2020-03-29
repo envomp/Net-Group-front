@@ -1,26 +1,22 @@
 import axios from "./axios";
 
-export async function getPeople() {
-    return await axios.get("/person/all")
+export function getPeople() {
+    return axios.get("/person/all")
         .then(res => {
-            const people = [];
-            for (let i = 0; i < res.data.length; i++) {
-                people.push(res.data[i])
-            }
-            return people;
+            return res.data;
         })
         .catch(error => {
             return []
         });
 }
 
-export async function getPerson(countryCode, idCode) {
-    return await axios.get("/person/" + countryCode + "/" + idCode)
+export function getPerson(countryCode, idCode) {
+    return axios.get("/person/" + countryCode + "/" + idCode)
         .then(res => {
-            return res;
+            return res.data;
         })
         .catch(error => {
-            return null
+            return {}
         });
 }
 
@@ -35,8 +31,8 @@ export async function postPerson(person) {
 }
 
 
-export async function putPerson(person) {
-    return await axios.put("/person", person)
+export function putPerson(person) {
+    return axios.put("/person", person)
         .then(res => {
             return res;
         })
@@ -47,7 +43,7 @@ export async function putPerson(person) {
 
 
 export function deletePerson(countryCode, idCode) {
-    axios.delete("/person/" + countryCode + "/" + idCode)
+    return axios.delete("/person/" + countryCode + "/" + idCode)
         .then(res => {
             return res;
         })
