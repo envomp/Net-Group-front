@@ -75,5 +75,9 @@
       "not op_mini all"
     ],
     "development": []
+  },
+  "engines": {
+    "node": ">=13.7.0",
+    "npm": ">=6.13.6"
   }
 }
