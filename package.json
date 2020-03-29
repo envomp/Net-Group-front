@@ -2,6 +2,7 @@
   "name": "envomp-net-group",
   "version": "1.8.0",
   "description": "Net group summer thingy",
+  "homepage": "https://envomp.github.io/Net-Group-front/",
   "private": true,
   "main": "dist/index.js",
   "dependencies": {
