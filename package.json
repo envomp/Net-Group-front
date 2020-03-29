@@ -79,7 +79,7 @@
     "development": []
   },
   "engines": {
-    "node": "13.7.0",
+    "node": "12.10.0",
     "npm": "6.13.6"
   }
 }
