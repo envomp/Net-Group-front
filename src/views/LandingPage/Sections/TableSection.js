@@ -21,36 +21,41 @@ export default function TableSection() {
             {
                 Header: 'Name',
                 accessor: 'name',
-                id: "1"
+                id: "0"
             },
             {
                 Header: 'Gender',
                 accessor: 'gender',
-                id: "2"
+                id: "1"
             },
             {
                 Header: 'Country code',
                 accessor: 'countryCode',
-                id: "3"
+                id: "2"
             },
             {
                 Header: 'ID code',
                 accessor: 'idCode',
-                id: "4"
+                id: "3"
             },
             {
                 Header: 'Birth date',
                 accessor: 'birthDate',
-                id: "5"
+                id: "4"
             },
             {
                 Header: 'Death date',
                 accessor: 'deathDate',
-                id: "6"
+                id: "5"
             },
             {
                 Header: 'Age',
                 accessor: 'age',
+                id: "6"
+            },
+            {
+                Header: 'Ancestors',
+                accessor: 'ancestors',
                 id: "7"
             }
         ],
@@ -61,14 +66,17 @@ export default function TableSection() {
 
     // Using useEffect to call the API once mounted and set the data
     React.useEffect(() => {
-        (async () => {
-            const result = await getPeople();
-            setData(result);
-        })();
+        refreshData();
     }, []);
 
     // We need to keep the table from resetting the pageIndex when we
     // Update data. So we can keep track of that flag with a ref.
+
+    const refreshData = () => {
+        (async () => {
+            setData(await getPeople());
+        })();
+    };
 
     // When our cell renderer calls updateMyData, we'll use
     // the rowIndex, columnId and new value to update the
@@ -79,16 +87,14 @@ export default function TableSection() {
         setData(old =>
             old.map((row, index) => {
                 if (index === rowIndex) {
-                    console.log(row);
-                    putPerson({
-                        ...old[rowIndex],
-                        [columnId]: value,
-                    }).then({
-                        ...old[rowIndex],
-                        [columnId]: value,
-
-                    }).catch(reason => {
+                    const old_country = row.countryCode;
+                    const old_id = row.idCode;
+                    row[columns[columnId].accessor] = value;
+                    row.parents = null;
+                    row.children = null;
+                    putPerson(old_country, old_id, row).then({row}).catch(reason => {
                         toast.error(reason.message);
+                        refreshData();
                         return row;
                     });
                 }
@@ -108,6 +114,7 @@ export default function TableSection() {
                         data={data}
                         setData={setData}
                         updateMyData={updateMyData}
+                        refreshData={refreshData}
                         skipPageReset={skipPageReset}
                     />
                 </GridItem>

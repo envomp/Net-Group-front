@@ -3,13 +3,13 @@ import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import "react-toastify/dist/ReactToastify.css";
 import {ToastContainer} from "react-toastify";
-import FocusIcon from "@material-ui/icons/AccountTree";
+import FocusIcon from "@material-ui/icons/GpsFixed";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Dialog from "@material-ui/core/Dialog";
 import React, {useEffect, useState} from 'react';
-import {getPersonTree} from "../../utils/API";
+import {getPerson, personPosition} from "../../utils/API";
 import {mapPersonToConnections} from "../../utils/Mapper";
 import {Graph} from 'react-d3-graph';
 
@@ -107,6 +107,7 @@ const onMouseOutLink = function (source, target) {
 const CreateGraphDialog = ({user}) => {
     const [open, setOpen] = React.useState(false);
     const [done, setDone] = React.useState(false);
+    const [position, setPosition] = React.useState(-1);
     const [fullPerson, setFullPerson] = useState({
         nodes: [{id: "Something went wrong.."}],
         links: []
@@ -115,7 +116,8 @@ const CreateGraphDialog = ({user}) => {
     useEffect(() => {
         async function fetchData() {
             if (!done) {
-                setFullPerson(mapPersonToConnections(await getPersonTree(user.countryCode, user.idCode)));
+                setFullPerson(mapPersonToConnections(await getPerson(user.countryCode, user.idCode)));
+                setPosition(await personPosition(user.countryCode, user.idCode));
                 setDone(true);
             }
         }
@@ -136,7 +138,7 @@ const CreateGraphDialog = ({user}) => {
 
     return (
         <div>
-            <Tooltip title="Display tree">
+            <Tooltip title="Display graph">
                 <IconButton aria-label="display" onClick={handleClickOpen}>
                     <FocusIcon/>
                 </IconButton>
@@ -148,7 +150,7 @@ const CreateGraphDialog = ({user}) => {
                 aria-labelledby="form-dialog-title"
             >
                 <ToastContainer autoClose={2000}/>
-                <DialogTitle id="form-dialog-title">Display tree</DialogTitle>
+                <DialogTitle id="form-dialog-title">Display graph</DialogTitle>
                 <DialogContent>
                     <Graph
                         id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
@@ -161,6 +163,9 @@ const CreateGraphDialog = ({user}) => {
                         onMouseOverLink={onMouseOverLink}
                         onMouseOutLink={onMouseOutLink}
                     />
+
+                    Given person is {position}. born child in his/her family
+
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">

@@ -83,6 +83,7 @@ const defaultColumn = {
 };
 
 const EnhancedTable = ({
+                           refreshData,
                            columns,
                            data,
                            setData,
@@ -182,6 +183,7 @@ const EnhancedTable = ({
                 numSelected={Object.keys(selectedRowIds).length}
                 deleteUserHandler={deleteUserHandler}
                 addUserHandler={addUserHandler}
+                refreshData={refreshData}
                 preGlobalFilteredRows={preGlobalFilteredRows}
                 setGlobalFilter={setGlobalFilter}
                 globalFilter={globalFilter}

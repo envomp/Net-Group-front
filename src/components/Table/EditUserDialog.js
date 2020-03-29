@@ -1,23 +1,38 @@
 import React, {useState} from 'react'
 
-import AddIcon from '@material-ui/icons/Add'
+import CreateIcon from '@material-ui/icons/Create'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import IconButton from '@material-ui/core/IconButton'
-import Datetime from "react-datetime";
 import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 import {toast, ToastContainer} from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import {postPerson} from "../../utils/API";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import CustomDropdown from "../CustomDropdown/CustomDropdown";
+import {putPerson} from "../../utils/API";
+import Datetime from "react-datetime";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
+import CustomDropdown from "../CustomDropdown/CustomDropdown";
+import ListItem from "@material-ui/core/ListItem";
+import List from "@material-ui/core/List";
+
+const initialUser = {
+    name: '',
+    gender: '',
+    countryCode: '',
+    idCode: '',
+    deathDate: '',
+    birthDate: '',
+    parents: null,
+    children: null,
+    subRows: undefined,
+    old_country: undefined,
+    old_id: undefined
+};
 
 const regexes = {
     name: new RegExp("^[A-Z][-A-z]+( [A-Z][-A-z]+)+$"),
@@ -37,25 +52,21 @@ const errors = {
     birthDate: false,
 };
 
-const initialUser = {
-    name: '',
-    gender: 'MALE',
-    countryCode: '',
-    idCode: '',
-    deathDate: '',
-    birthDate: '',
-    parents: null,
-    children: null,
-    subRows: undefined
-};
-
-const AddUserDialog = ({refreshData, addUserHandler, stash1, stash2}) => {
-
-
+const EditUserDialog = ({refreshData, existing, stash1, stash2}) => {
     const [user, setUser] = useState(initialUser);
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
+        user.old_country = existing.countryCode;
+        user.old_id = existing.idCode;
+        user.idCode = existing.idCode;
+        user.countryCode = existing.countryCode;
+        user.gender = existing.gender;
+        user.birthDate = existing.birthDate;
+        user.deathDate = existing.deathDate;
+        user.name = existing.name;
+        user.children = existing.children;
+        user.parents = existing.parents;
         setOpen(true);
     };
 
@@ -66,8 +77,7 @@ const AddUserDialog = ({refreshData, addUserHandler, stash1, stash2}) => {
 
     const handleAdd = event => {
 
-        postPerson(user).then(x => {
-            addUserHandler(user);
+        putPerson(user.old_country, user.old_id, user).then(x => {
             setUser(initialUser);
             setOpen(false);
             refreshData();
@@ -79,14 +89,13 @@ const AddUserDialog = ({refreshData, addUserHandler, stash1, stash2}) => {
     const handleChange = name => ({target: {value}}) => {
         setUser({...user, [name]: value});
         errors[name] = !regexes[name].test({...user, [name]: value}[name]);
-        console.log(errors)
     };
 
     return (
         <div>
-            <Tooltip title="Add">
+            <Tooltip title="Edit">
                 <IconButton aria-label="add" onClick={handleClickOpen}>
-                    <AddIcon/>
+                    <CreateIcon/>
                 </IconButton>
             </Tooltip>
             <Dialog
@@ -96,8 +105,9 @@ const AddUserDialog = ({refreshData, addUserHandler, stash1, stash2}) => {
                 fullWidth={true}
             >
                 <ToastContainer autoClose={2000}/>
-                <DialogTitle id="form-dialog-title">Add User</DialogTitle>
+                <DialogTitle id="form-dialog-title">Edit User</DialogTitle>
                 <DialogContent>
+                    <DialogContentText>Alter user in database</DialogContentText>
                     <List>
 
                         <ListItem>
@@ -143,10 +153,7 @@ const AddUserDialog = ({refreshData, addUserHandler, stash1, stash2}) => {
                                 buttonProps={{
                                     color: "transparent"
                                 }}
-                                onClick={(x) => {
-                                    handleChange('gender');
-                                    user.gender = x;
-                                }}
+                                onClick={(x) => user.gender = x}
                                 dropdownList={[
                                     "MALE",
                                     "FEMALE",
@@ -197,7 +204,7 @@ const AddUserDialog = ({refreshData, addUserHandler, stash1, stash2}) => {
                         Cancel
                     </Button>
                     <Button onClick={handleAdd} color="primary">
-                        Add
+                        Save
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -206,4 +213,4 @@ const AddUserDialog = ({refreshData, addUserHandler, stash1, stash2}) => {
 };
 
 
-export default AddUserDialog
+export default EditUserDialog

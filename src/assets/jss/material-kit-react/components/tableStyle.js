@@ -3,7 +3,7 @@ import { containerFull } from "assets/jss/material-kit-react.js";
 const tableStyle = {
     container: {
         zIndex: "12",
-        color: "#FFFFFF",
+        // color: "#FFFFFF",
         ...containerFull
     },
     main: {
