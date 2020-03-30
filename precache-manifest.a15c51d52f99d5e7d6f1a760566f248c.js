@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "63be1797046e1ef00454c3bd68ef89d6",
+    "revision": "0d778b22674157e7f8dae5889c28dcd4",
     "url": "/Net-Group-front/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Net-Group-front/static/css/2.09c74b70.chunk.css"
   },
   {
-    "revision": "4f99d144797cd768c803",
+    "revision": "447795e037cffda5b018",
     "url": "/Net-Group-front/static/css/main.2a7458d6.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Net-Group-front/static/js/2.87c655b5.chunk.js"
   },
   {
-    "revision": "4f99d144797cd768c803",
-    "url": "/Net-Group-front/static/js/main.08375634.chunk.js"
+    "revision": "447795e037cffda5b018",
+    "url": "/Net-Group-front/static/js/main.22d02e83.chunk.js"
   },
   {
     "revision": "06ace387046688f59769",
