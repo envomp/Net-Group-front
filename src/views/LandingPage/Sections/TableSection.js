@@ -92,8 +92,8 @@ export default function TableSection() {
                     row[columns[columnId].accessor] = value;
                     row.parents = null;
                     row.children = null;
-                    putPerson(old_country, old_id, row).then({row}).catch(reason => {
-                        toast.error(reason.message);
+                    putPerson(old_country, old_id, row).then({row}).catch(x => {
+                        toast.error(x.response.data.message);
                         refreshData();
                         return row;
                     });

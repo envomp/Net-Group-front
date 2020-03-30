@@ -82,7 +82,7 @@ const EditUserDialog = ({refreshData, existing, stash1, stash2}) => {
             setOpen(false);
             refreshData();
         }).catch(x => {
-            toast.error(x.message);
+            toast.error(x.response.data.message);
         });
     };
 
@@ -200,7 +200,7 @@ const EditUserDialog = ({refreshData, existing, stash1, stash2}) => {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="danger">
+                    <Button onClick={handleClose} color="secondary">
                         Cancel
                     </Button>
                     <Button onClick={handleAdd} color="primary">

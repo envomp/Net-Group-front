@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Datetime from "react-datetime";
 import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
-import {toast, ToastContainer} from 'react-toastify';
+import {toast} from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import {postPerson} from "../../utils/API";
 import List from "@material-ui/core/List";
@@ -72,14 +72,13 @@ const AddUserDialog = ({refreshData, addUserHandler, stash1, stash2}) => {
             setOpen(false);
             refreshData();
         }).catch(x => {
-            toast.error(x.message);
+            toast.error(x.response.data.message);
         });
     };
 
     const handleChange = name => ({target: {value}}) => {
         setUser({...user, [name]: value});
         errors[name] = !regexes[name].test({...user, [name]: value}[name]);
-        console.log(errors)
     };
 
     return (
@@ -192,7 +191,7 @@ const AddUserDialog = ({refreshData, addUserHandler, stash1, stash2}) => {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="danger">
+                    <Button onClick={handleClose} color="secondary">
                         Cancel
                     </Button>
                     <Button onClick={handleAdd} color="primary">
